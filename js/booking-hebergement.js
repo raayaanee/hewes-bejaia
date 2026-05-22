@@ -1,16 +1,3 @@
-/**
- * booking-hebergement.js  — v2 CORRIGÉ
- *
- * Correction principale :
- *   _submit() envoie maintenant client_id (lu depuis window.HB_CLIENT_ID
- *   injecté par PHP) pour éviter SQLSTATE 1048 (client_id NOT NULL).
- *
- * Dans votre page PHP qui inclut ce script, ajoutez AVANT l'include :
- *   <script>
- *     window.HB_CLIENT_ID = <?php echo isset($_SESSION['client_id']) ? (int)$_SESSION['client_id'] : 'null'; ?>;
- *   </script>
- *   <script src="js/booking-hebergement.js"></script>
- */
 
 window.HebergementBooking = (function () {
 
@@ -203,10 +190,8 @@ window.HebergementBooking = (function () {
   const typeBg    = { apartment:'#dbeafe', villa:'#d1fae5', room:'#f3f4f6', chalet:'#fef9c3' };
   const typeColor = { apartment:'#1d4ed8', villa:'#065f46', room:'#374151', chalet:'#854d0e' };
 
-  // ── Lire client_id depuis la variable PHP injectée ────────
+
   function getClientId() {
-    // window.HB_CLIENT_ID doit être injecté par PHP dans la page :
-    // <script>window.HB_CLIENT_ID = <?= isset($_SESSION['client_id']) ? (int)$_SESSION['client_id'] : 'null' ?>;</script>
     if (window.HB_CLIENT_ID && parseInt(window.HB_CLIENT_ID) > 0) {
       return parseInt(window.HB_CLIENT_ID);
     }
@@ -493,7 +478,7 @@ window.HebergementBooking = (function () {
       return;
     }
 
-    // Validation format téléphone (même logique que booking-system.js)
+   
     if (!phone.startsWith('+') || phone.length < 10 || phone.length > 16) {
       errDiv.innerHTML = `<div class="hb-avail-box hb-avail-err">⚠️ Format requis : +213XXXXXXXXX (avec le code pays)</div>`;
       document.getElementById('hbFPhone').style.borderColor = '#ef4444';
@@ -510,8 +495,8 @@ window.HebergementBooking = (function () {
     const btn = root.querySelector('.hb-btn-main');
     if (btn) { btn.disabled = true; btn.innerHTML = '<span class="hb-spinner"></span> Confirmation…'; }
 
-    // ── CORRECTION : inclure client_id dans le payload ──────
-    const clientId = getClientId(); // lu depuis window.HB_CLIENT_ID (injecté par PHP)
+   
+    const clientId = getClientId(); 
 
     const payload = {
       activity_id:      state.activityId,
@@ -525,8 +510,7 @@ window.HebergementBooking = (function () {
       special_requests: notes || ''
     };
 
-    // Ajouter client_id seulement s'il est disponible
-    // (make_reservation.php peut aussi le trouver via session ou email)
+   
     if (clientId) {
       payload.client_id = clientId;
     }

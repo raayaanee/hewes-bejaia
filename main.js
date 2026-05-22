@@ -1,10 +1,4 @@
-// ============================================================
-// MAIN.JS — HEWES BEJAIA
-// ============================================================
 
-// ============================================================
-// INITIALISATION AOS (Animate On Scroll)
-// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
   AOS.init({
     duration: 800,
@@ -16,16 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeApp();
 });
 
-// ============================================================
-// INITIALISATION DE L'APPLICATION
-// ============================================================
-async function initializeApp() {
-  try {
-    console.log('🌊 Hawas Bjaya - Application initialisée pour WAMP/MySQL');
-  } catch (error) {
-    console.error('Erreur d\'initialisation:', error);
-  }
-}
 
 // ============================================================
 // UTILITAIRES
@@ -129,15 +113,6 @@ window.addEventListener('scroll', () => {
   lastScrollY = currentScrollY;
 });
 
-// ============================================================
-// LIEN DE NAVIGATION ACTIF AU SCROLL (SCROLL SPY)
-//
-// Quand l'utilisateur scrolle, on détecte quelle section
-// est visible à l'écran et on met en surbrillance le lien
-// correspondant dans la navbar (classe CSS .active).
-//
-// Exemple : scroll vers #services → le lien "Activités" s'allume
-// ============================================================
 (function initScrollSpy() {
 
   // Sélectionner tous les liens nav qui pointent vers une ancre (#...)

@@ -1,11 +1,5 @@
 <?php
-/**
- * update_reservation_status.php — VERSION CORRIGÉE
- *
- * Correction : LEFT JOIN time_slots (au lieu de JOIN)
- * → Les réservations hébergement (time_slot_id fictif) ne plantent plus
- * → Fonctionne pour activités ET hébergements
- */
+
 
 require_once '../config/database.php';
 header('Content-Type: application/json');

@@ -1,5 +1,5 @@
 <?php
-// Configuration de la base de données MySQL pour WAMP
+
 class Database {
     private $host = 'localhost';
     private $db_name = 'hawas_bjaya';
@@ -27,7 +27,7 @@ class Database {
     }
 }
 
-// Fonctions utilitaires - vérifier si elles existent déjà
+
 if (!function_exists('sanitize')) {
     function sanitize($data) {
         return htmlspecialchars(strip_tags(trim($data)));
@@ -47,7 +47,7 @@ if (!function_exists('sendWhatsAppNotification')) {
     }
 }
 
-// Démarrer la session si pas déjà démarrée
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

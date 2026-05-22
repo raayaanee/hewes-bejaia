@@ -1,11 +1,3 @@
-/**
- * booking-system.js — Version 2 (CORRIGÉ)
- * Corrections :
- *   1. _lastSlots est maintenant stocké dans _renderSlots() pour que _selectSlot() récupère les vraies données
- *   2. start_time / end_time sont bien transmis dans le payload depuis this.slot
- *   3. Utilise get_availability_for_date.php (même API que booking.php) → vrais créneaux DB
- *      Le format retourné est { success, slots: [{id, start_time, end_time, max_participants, current_reservations, ...}] }
- */
 
 class BookingSystem {
     constructor() {

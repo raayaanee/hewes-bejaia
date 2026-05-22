@@ -159,7 +159,7 @@ $statusColors = [
 
   <div class="page-body">
 
-    <!-- ── Stats ─────────────────────────────────────────── -->
+  
     <div class="stats-row stagger">
       <div class="stat-card c-blue">
         <div class="card-icon-wrap"><i class="fas fa-house"></i></div>
@@ -398,9 +398,9 @@ $statusColors = [
       <?php endif; ?>
     </div><!-- /tab-reservations -->
 
-  </div><!-- /page-body -->
-</div><!-- /main-content -->
-</div><!-- /admin-layout -->
+  </div>
+</div>
+</div>
 
 <!-- ══════════════════════════════════════════════════════════
      MODAL : AJOUTER / MODIFIER UN HÉBERGEMENT
@@ -566,12 +566,10 @@ $statusColors = [
      JAVASCRIPT
 ═══════════════════════════════════════════════════════════ -->
 <script>
-// ── Helpers fetch avec credentials (FIX prod session) ────────
-// CORRECTION PRINCIPALE : credentials:'include' envoie les cookies de session
-// au serveur même en prod, ce qui évite l'erreur "non autorisé"
+
 function apiFetch(url, options = {}) {
     return fetch(url, {
-        credentials: 'include',   // ← CRITIQUE pour la session en prod
+        credentials: 'include',   
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -608,7 +606,7 @@ function filterReservations() {
 
 // ── Changer statut réservation hébergement ────────────────────
 // Même endpoint que reservations.php : update_reservation_status.php
-// Paramètre : reservation_id (pas "id")
+
 async function changeStatus(id, newStatus, selectEl) {
     const labels = { confirmed:'Confirmer', completed:'Marquer terminée', cancelled:'Annuler' };
     if (!confirm((labels[newStatus] || 'Changer') + ' cette réservation ?')) {

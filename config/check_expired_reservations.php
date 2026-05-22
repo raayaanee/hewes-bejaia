@@ -1,16 +1,4 @@
 <?php
-/**
- * check_expired_reservations.php  (VERSION FUSIONNÉE)
- *
- * Basé sur le fichier original qui fonctionnait.
- * Ajout : gestion des hébergements (nightly) — libère les dates bloquées
- *
- * Usage :
- *   require_once '../config/check_expired_reservations.php';
- *   checkAndCancelExpired($db);
- *
- * Placer ce fichier dans : config/check_expired_reservations.php
- */
 
 function checkAndCancelExpired(PDO $db): int
 {
@@ -26,8 +14,7 @@ function checkAndCancelExpired(PDO $db): int
     try {
         $db->beginTransaction();
 
-        // ── 1. ACTIVITÉS expirées ────────────────────────────
-        // LEFT JOIN time_slots pour ne pas planter sur time_slot_id fictif
+        
         $findStmt = $db->prepare("
             SELECT
                 r.id,
@@ -66,7 +53,7 @@ function checkAndCancelExpired(PDO $db): int
             }
         }
 
-        // ── 2. HÉBERGEMENTS expirés ──────────────────────────
+        // ── . HÉBERGEMENTS expirés ──────────────────────────
         $findAccoStmt = $db->prepare("
             SELECT r.id, r.accommodation_id
             FROM reservations r

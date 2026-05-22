@@ -1,12 +1,5 @@
 <?php
-/**
- * make_reservation.php  (VERSION FINALE)
- *
- * Résolution SQLSTATE 1048 (client_id NOT NULL) :
- *   1. Lit client_id depuis : input JSON → $_SESSION → lookup/création par email
- *   2. Ne nécessite aucun ALTER TABLE en production.
- *   3. booking-hebergement.js corrigé envoie aussi client_id.
- */
+
 
 require_once '../config/database.php'; // gère session_name + session_start
 header('Content-Type: application/json');

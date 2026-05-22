@@ -1,15 +1,5 @@
 <?php
-/**
- * Configuration Email avec PHPMailer - INSTALLATION MANUELLE
- * 
- * INSTRUCTIONS D'INSTALLATION :
- * 1. Téléchargez PHPMailer : https://github.com/PHPMailer/PHPMailer/archive/refs/heads/master.zip
- * 2. Extrayez et copiez le dossier dans votre projet comme suit :
- *    votre_projet/PHPMailer/src/
- * 3. Configurez vos identifiants Gmail ci-dessous
- */
 
-// Inclure les fichiers PHPMailer manuellement
 require_once __DIR__ . '/../PHPMailer/src/Exception.php';
 require_once __DIR__ . '/../PHPMailer/src/PHPMailer.php';
 require_once __DIR__ . '/../PHPMailer/src/SMTP.php';
@@ -20,12 +10,12 @@ use PHPMailer\PHPMailer\Exception;
 class EmailService {
     private $mail;
     
-    // ⚠️ CONFIGURATION À PERSONNALISER
-    private $smtp_host = 'smtp.gmail.com';  // Gmail SMTP
-    private $smtp_port = 587;                // 587 pour TLS, 465 pour SSL
-    private $smtp_username = 'rayanmaouche275@gmail.com';  // ⚠️ CHANGEZ ICI
-    private $smtp_password = 'grdo rznz kwre byiy';  // ⚠️ CHANGEZ ICI (16 caractères)
-    private $from_email = 'rayanmaouche275@gmail.com';  // ⚠️ CHANGEZ ICI
+    
+    private $smtp_host = 'smtp.gmail.com';  
+    private $smtp_port = 587;              
+    private $smtp_username = 'rayanmaouche275@gmail.com';  
+    private $smtp_password = '********';  
+    private $from_email = 'rayanmaouche275@gmail.com';
     private $from_name = 'Hewes bejaia';
     
     public function __construct() {
@@ -45,8 +35,7 @@ class EmailService {
             $this->mail->Port = $this->smtp_port;
             $this->mail->CharSet = 'UTF-8';
             
-            // Pour déboguer les problèmes d'envoi (décommentez si besoin)
-            // $this->mail->SMTPDebug = 2; // 0 = off, 1 = messages client, 2 = messages client et serveur
+            
             
             // Configuration expéditeur
             $this->mail->setFrom($this->from_email, $this->from_name);
@@ -55,9 +44,7 @@ class EmailService {
         }
     }
     
-    /**
-     * Envoyer un email de vérification
-     */
+   
     public function sendVerificationEmail($to_email, $to_name, $verification_token) {
         try {
             $this->mail->clearAddresses();
@@ -80,9 +67,8 @@ class EmailService {
         }
     }
     
-    /**
-     * Envoyer un email de réinitialisation de mot de passe
-     */
+
+    
     public function sendPasswordResetEmail($to_email, $to_name, $reset_token) {
         try {
             $this->mail->clearAddresses();
@@ -105,9 +91,8 @@ class EmailService {
         }
     }
     
-    /**
-     * Template HTML pour email de vérification
-     */
+  
+ 
     private function getVerificationEmailTemplate($name, $link) {
         return "
         <!DOCTYPE html>
@@ -195,33 +180,4 @@ class EmailService {
     }
 }
 
-/**
- * ============================================
- * GUIDE DE CONFIGURATION GMAIL
- * ============================================
- * 
- * 1. Activez la validation en 2 étapes :
- *    - https://myaccount.google.com/security
- *    - Cherchez "Validation en deux étapes"
- *    - Suivez les instructions
- * 
- * 2. Générez un mot de passe d'application :
- *    - Retournez sur https://myaccount.google.com/security
- *    - Cherchez "Mots de passe d'application"
- *    - Sélectionnez "Messagerie" → "Autre (nom personnalisé)"
- *    - Tapez : "HEWES BEJAIA Site"
- *    - Cliquez "Générer"
- *    - Copiez le mot de passe de 16 caractères
- * 
- * 3. Collez-le dans $smtp_password ci-dessus
- * 
- * LIMITES GMAIL :
- * - Maximum 500 emails par jour
- * - Maximum 100 destinataires par email
- * 
- * ALTERNATIVES GRATUITES :
- * - SendGrid : 100 emails/jour gratuits
- * - Mailgun : 5000 emails/mois gratuits
- * - Amazon SES : Très économique
- */
 ?>
