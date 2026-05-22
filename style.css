@@ -1,0 +1,1872 @@
+
+
+
+:root {
+  /* --- Couleurs principales --- */
+  --primary-color:     #0066cc;   /* Bleu principal (liens, boutons…)   */
+  --primary-light:     #3385d6;   /* Bleu clair (hover, accents)         */
+  --primary-dark:      #004499;   /* Bleu foncé (survol bouton)          */
+
+  /* --- Couleurs secondaires --- */
+  --secondary-color:   #00a8cc;   /* Cyan (dégradé avec le bleu)         */
+  --secondary-light:   #33b8d6;
+  --secondary-dark:    #007599;
+
+  /* --- Couleur d'accentuation --- */
+  --accent-color:      #ff6b35;   /* Orange vif (prix, badges "populaire") */
+  --accent-light:      #ff8559;
+  --accent-dark:       #e55a2b;
+
+  /* --- Couleurs de statut --- */
+  --success-color:     #10b981;   /* Vert (WhatsApp, succès)              */
+  --warning-color:     #f59e0b;   /* Jaune (avertissements)               */
+  --error-color:       #ef4444;   /* Rouge (erreurs)                      */
+
+  /* --- Nuances de gris --- */
+  --white:      #ffffff;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-500:   #6b7280;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --gray-900:   #111827;
+
+  /* --- Dégradés réutilisables --- */
+  --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  --gradient-accent:  linear-gradient(135deg, var(--accent-color), var(--accent-light));
+  --gradient-dark:    linear-gradient(135deg, var(--gray-800), var(--gray-900));
+
+  /* --- Ombres portées --- */
+  --shadow-sm:  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* --- Espacements (padding / margin) --- */
+  --spacing-xs:  0.25rem;   /*  4px */
+  --spacing-sm:  0.5rem;    /*  8px */
+  --spacing-md:  1rem;      /* 16px */
+  --spacing-lg:  1.5rem;    /* 24px */
+  --spacing-xl:  2rem;      /* 32px */
+  --spacing-2xl: 3rem;      /* 48px */
+  --spacing-3xl: 4rem;      /* 64px */
+
+  /* --- Rayons de bordure (border-radius) --- */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.5rem;
+  --radius-lg:   0.75rem;
+  --radius-xl:   1rem;
+  --radius-2xl:  1.5rem;
+  --radius-full: 9999px;    /* Cercle parfait / pilule */
+
+  /* --- Transitions --- */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow:   0.5s ease;
+}
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Inclut la bordure dans la largeur totale */
+}
+
+html {
+  scroll-behavior: smooth; /* Défilement fluide lors des ancres (#section) */
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--gray-800);
+  background-color: var(--white);
+  overflow-x: hidden; /* Empêche le défilement horizontal non voulu */
+}
+
+/* Conteneur centré avec largeur max */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+
+
+.loading-screen {
+  position: fixed;        /* Couvre toute la fenêtre */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;          /* Au-dessus de tout le reste */
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Classe ajoutée par JS pour masquer l'écran */
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-content {
+  text-align: center;
+  color: var(--white);
+}
+
+/* Titre du logo pendant le chargement */
+.loading-logo h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Barre animée sous le logo */
+.loading-wave {
+  width: 60px;
+  height: 4px;
+  background: var(--white);
+  margin: 0 auto var(--spacing-lg);
+  border-radius: var(--radius-full);
+  animation: loading-wave 1.5s ease-in-out infinite;
+}
+
+/* Message de statut (petit texte sous la barre) */
+.loading-status {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+
+/* Texte d'ambiance */
+.loading-text {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Animation : la barre s'élargit et revient */
+@keyframes loading-wave {
+  0%, 100% { transform: scaleX(1); }
+  50%       { transform: scaleX(1.5); }
+}
+
+
+/* ============================================================
+   04. EN-TÊTE & NAVIGATION (HEADER / NAVBAR)
+   Barre fixée en haut, reste visible pendant le scroll.
+   ============================================================ */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1000;          /* En dessous du loading screen mais au-dessus du contenu */
+  transition: all var(--transition-normal);
+}
+
+/* Classe ajoutée par JS quand l'utilisateur fait défiler */
+.header.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--shadow-lg);
+}
+
+.navbar {
+  padding: var(--spacing-md) 0;
+}
+
+/* Mise en page de la navbar : logo | liens | bouton */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Logo texte en haut à gauche */
+.nav-logo h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+/* Sous-titre du logo ("Béjaïa Adventures") */
+.logo-subtitle {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  font-weight: 400;
+  display: block;
+  margin-top: -0.25rem;
+}
+
+/* Liste des liens de navigation (ul) */
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+/* Chaque lien de navigation */
+.nav-link {
+  text-decoration: none;
+  color: var(--gray-700);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all var(--transition-normal);
+  position: relative;
+  padding: var(--spacing-sm) 0;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* Ligne de soulignement animée au survol */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--gradient-primary);
+  transition: width var(--transition-normal);
+}
+
+.nav-link:hover::after {
+  width: 100%; /* S'étend sur toute la largeur au survol */
+}
+
+
+
+/* Couleur du lien actif (même couleur que le hover) */
+.nav-link.active {
+  color: var(--primary-color);
+  font-weight: 700; /* Un peu plus gras pour le distinguer des autres */
+}
+
+/* La ligne de soulignement reste visible en permanence quand actif,
+   pas seulement au survol */
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Petit point indicateur au-dessus du lien actif
+   (optionnel — supprime ces 6 lignes si tu veux juste le soulignement) */
+.nav-link.active::before {
+  content: '';
+  position: absolute;
+  top: -6px;             /* Juste au-dessus du texte */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px; height: 5px;
+  background: var(--primary-color);
+  border-radius: 50%;    /* Cercle parfait */
+}
+
+/* Zone du bouton CTA à droite de la nav */
+.nav-cta {
+  margin-left: var(--spacing-lg);
+}
+
+/* Style de base partagé par les boutons d'authentification */
+.auth-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+}
+
+/* Bouton "Se connecter" (utilisateur non connecté) */
+.login-btn {
+  background: transparent;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.login-btn:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+
+
+.hamburger {
+  display: none;          /* Caché sur desktop, affiché via media query */
+  flex-direction: column;
+  cursor: pointer;
+  padding: var(--spacing-sm);
+}
+
+/* Chaque barre du hamburger */
+.bar {
+  width: 25px;
+  height: 3px;
+  background: var(--gray-700);
+  margin: 3px 0;
+  transition: var(--transition-normal);
+  border-radius: var(--radius-sm);
+}
+
+/* Animation : transformation en croix (X) quand actif */
+.hamburger.active .bar:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active .bar:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+
+/* ============================================================
+   06. SECTION HERO (BANNIÈRE PRINCIPALE)
+   Grande image de fond avec titre, texte et boutons CTA.
+   ============================================================ */
+.hero {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white);
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 102, 204, 0.8), rgba(0, 168, 204, 0.6));
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 900px;
+  padding: 0 var(--spacing-lg);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.2;
+}
+
+.highlight {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  margin-bottom: var(--spacing-2xl);
+  opacity: 0.95;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: var(--spacing-lg);
+  justify-content: center;
+  margin-bottom: var(--spacing-3xl);
+  flex-wrap: wrap;
+}
+
+
+/* --- Boutons génériques (.btn) --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Effet de brillance qui traverse le bouton au survol */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+.btn:hover::before {
+  left: 100%;
+}
+
+/* Bouton principal orange (action principale) */
+.btn-primary {
+  background: var(--gradient-accent);
+  color: var(--white);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Bouton secondaire transparent (action secondaire) */
+.btn-secondary {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--white);
+  transform: translateY(-3px);
+}
+
+/* Statistiques en bas du hero (500+ réservations, etc.) */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-3xl);
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+/* Chiffre mis en avant avec le dégradé accent */
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Indicateur de défilement en bas du hero */
+.hero-scroll {
+  position: absolute;
+  bottom: var(--spacing-2xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--white);
+  font-size: 0.9rem;
+  animation: bounce 2s infinite;
+}
+
+/* Trait vertical de l'indicateur */
+.scroll-arrow {
+  width: 2px;
+  height: 30px;
+  background: var(--white);
+  position: relative;
+}
+
+/* Flèche pointant vers le bas */
+.scroll-arrow::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: -3px;
+  width: 8px; height: 8px;
+  border-right: 2px solid var(--white);
+  border-bottom: 2px solid var(--white);
+  transform: rotate(45deg);
+}
+
+/* Animation de rebond de l'indicateur de scroll */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40%  { transform: translateY(-10px); }
+  60%  { transform: translateY(-5px); }
+}
+
+
+
+
+/* En-tête de section (badge + titre + sous-titre) */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+/* Petite pastille colorée au-dessus du titre */
+.section-badge {
+  display: inline-block;
+  background: var(--gradient-primary);
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Titre principal d'une section */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.2;
+}
+
+/* Description courte sous le titre */
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--gray-600);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+
+
+.services {
+  padding: 100px 0;
+  background: var(--gray-50);
+}
+
+/* Filtres par catégorie (Toutes / Nautiques / Terrestres…) */
+.service-categories {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-3xl);
+  flex-wrap: wrap;
+}
+
+/* Bouton de filtre (inactif) */
+.category-btn {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  color: var(--gray-600);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+/* Bouton de filtre actif ou survolé */
+.category-btn:hover,
+.category-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* Grille responsive des cartes d'activités */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+/* Carte individuelle d'activité */
+.service-card {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  position: relative;
+  cursor: pointer;
+
+  /* Animation d'apparition (retardée par JS via animationDelay) */
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-2xl);
+}
+
+/* Variante mise en avant (dégradé bleu) */
+.service-card.featured {
+  background: var(--gradient-primary);
+  color: var(--white);
+  transform: scale(1.02);
+}
+.service-card.featured:hover {
+  transform: scale(1.02) translateY(-10px);
+}
+
+/* Carte désactivée / indisponible */
+.service-card.unavailable {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.service-card.unavailable:hover {
+  transform: none;
+}
+
+/* Badge "Populaire" en haut à droite de la carte */
+.service-badge {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  background: var(--accent-color);
+  color: var(--white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+/* Zone image en haut de la carte */
+.service-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.service-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+/* Zoom de l'image au survol de la carte */
+.service-card:hover .service-image img {
+  transform: scale(1.1);
+}
+
+/* Overlay avec icône qui apparaît au survol */
+.service-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg,
+    rgba(0, 102, 204, 0.8),
+    rgba(0, 168, 204, 0.6)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+.service-card:hover .service-overlay {
+  opacity: 1;
+}
+.service-overlay i {
+  font-size: 3rem;
+  color: var(--white);
+}
+
+/* Label "Non disponible" centré sur l'image */
+.unavailable-overlay {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  z-index: 2;
+}
+
+/* Contenu textuel de la carte (titre, description, prix…) */
+.service-content {
+  padding: var(--spacing-xl);
+}
+
+.service-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: inherit;
+}
+
+.service-content p {
+  color: var(--gray-600);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.service-card.featured .service-content p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Petits badges : durée, participants, catégorie */
+.service-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.service-features span {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--gray-100);
+  color: var(--gray-600);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.service-card.featured .service-features span {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+/* Zone prix (chiffre + unité) */
+.service-price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+
+/* Chiffre du prix en grand */
+.price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+.service-card.featured .price {
+  color: var(--white);
+}
+
+/* Texte "/personne" ou "/groupe" */
+.price-unit {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+}
+.service-card.featured .price-unit {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+
+
+/* Bouton principal "Réserver Maintenant" dans chaque carte */
+.reserve-btn {
+  width: 100%;
+  background: var(--gradient-primary);
+  color: var(--white);
+  padding: 1rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: 1rem;
+  text-decoration: none;   /* Au cas où utilisé comme <a> */
+}
+
+.reserve-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 102, 204, 0.3);
+}
+
+/* Encadré d'accès à l'interface administrateur */
+.admin-access {
+  background: var(--gray-50);
+  padding: 2rem;
+  border-radius: var(--radius-2xl);
+  text-align: center;
+}
+.admin-access h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--gray-900);
+}
+.admin-access p {
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+}
+
+/* Bouton lien vers l'admin */
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--gradient-primary);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+}
+.admin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 102, 204, 0.3);
+}
+
+
+
+.about {
+  padding: 100px 0;
+  background: var(--white);
+}
+
+/* Grille deux colonnes */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3xl);
+  align-items: center;
+}
+
+.about-content {
+  padding-right: var(--spacing-xl);
+}
+
+.about-text {
+  font-size: 1.1rem;
+  color: var(--gray-600);
+  margin-bottom: var(--spacing-2xl);
+  line-height: 1.7;
+}
+
+/* Liste des fonctionnalités (icône + texte) */
+.about-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.feature-item {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: flex-start;
+}
+
+/* Carré d'icône avec dégradé bleu */
+.feature-icon {
+  width: 60px; height: 60px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Ne rétrécit pas quand l'espace est limité */
+}
+.feature-icon i {
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.feature-content h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  color: var(--gray-900);
+}
+.feature-content p {
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* Colonne image droite */
+.about-image { position: relative; }
+
+.image-container {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+.image-container img {
+  width: 100%; height: 400px;
+  object-fit: cover;
+}
+
+/* Overlay foncé au survol de l'image */
+.image-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+.image-container:hover .image-overlay {
+  opacity: 1;
+}
+
+/* Bouton rond (icône calendrier) centré sur l'image */
+.play-button {
+  width: 80px; height: 80px;
+  background: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform var(--transition-normal);
+  text-decoration: none;
+}
+.play-button:hover {
+  transform: scale(1.1);
+}
+.play-button i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-left: 4px;
+}
+
+
+/* ============================================================
+   11. SECTION GALERIE (photos)
+   ============================================================ */
+
+/* Conteneur de la section galerie */
+.gallery-section {
+  padding: 80px 0;
+  background: var(--gray-50);
+}
+
+/* Grille responsive des photos */
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Carte photo individuelle */
+.photo-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-normal);
+  height: 250px;
+  position: relative;
+
+  /* Animation d'apparition (synchronisée avec les cartes services) */
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.photo-card:hover {
+  transform: translateY(-10px); /* Lévitation au survol */
+}
+
+/* Conteneur interne de l'image */
+.photo-container {
+  width: 100%; height: 100%;
+}
+
+.photo-container img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Bandeau de texte qui glisse depuis le bas au survol */
+.photo-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--white);
+  padding: 20px;
+  transform: translateY(100%);      /* Caché en dessous par défaut */
+  transition: transform var(--transition-normal);
+}
+.photo-card:hover .photo-overlay {
+  transform: translateY(0);         /* Remonte au survol */
+}
+
+/* Titre de la photo */
+.photo-info .caption {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 1em;
+}
+
+/* Description courte */
+.photo-info .description {
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin: 3px 0;
+}
+
+/* Message affiché si aucune photo n'est disponible */
+.no-content {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray-500);
+  grid-column: 1 / -1;   /* Occupe toute la largeur de la grille */
+}
+.no-content i {
+  font-size: 3em;
+  margin-bottom: 20px;
+  color: var(--gray-300);
+}
+.no-content p {
+  font-size: 1.2em;
+}
+
+/* --- Styles de galerie non utilisés dans cette version --- */
+/* Conservés pour compatibilité ou évolutions futures */
+.gallery {
+  padding: 100px 0;
+  background: var(--gray-50);
+}
+.gallery-filters {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-3xl);
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  color: var(--gray-600);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  height: 300px;
+  cursor: pointer;
+  transition: transform var(--transition-normal);
+}
+.gallery-item:hover {
+  transform: translateY(-5px);
+}
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+.gallery-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--spacing-xl);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+.gallery-content { color: var(--white); width: 100%; }
+.gallery-content h4 { font-size: 1.3rem; font-weight: 600; margin-bottom: var(--spacing-sm); }
+.gallery-content p  { font-size: 0.9rem; opacity: 0.9; margin-bottom: var(--spacing-md); }
+.gallery-actions    { display: flex; gap: var(--spacing-sm); }
+.gallery-btn {
+  width: 40px; height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  color: var(--white);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-btn:hover {
+  background: var(--white);
+  color: var(--primary-color);
+}
+
+
+/* ============================================================
+   12. SECTION CONTACT
+   Deux colonnes : informations de contact | formulaire.
+   ============================================================ */
+.contact {
+  padding: 100px 0;
+  background: var(--white);
+}
+
+/* Grille deux colonnes */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3xl);
+}
+
+/* Carte encadrée (info et formulaire partagent ce style) */
+.contact-card {
+  background: var(--gray-50);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-2xl);
+  margin-bottom: var(--spacing-xl);
+}
+.contact-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xl);
+  color: var(--gray-900);
+}
+
+/* Une ligne d'information (icône + texte) */
+.contact-item {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start;
+}
+
+/* Carré d'icône bleu */
+.contact-icon {
+  width: 50px; height: 50px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.contact-icon i {
+  font-size: 1.2rem;
+  color: var(--white);
+}
+
+.contact-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+  color: var(--gray-900);
+}
+.contact-content p {
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* Réseaux sociaux (non utilisé dans cette section mais gardé) */
+.contact-social { margin-top: var(--spacing-xl); }
+.contact-social h4 { font-size: 1.2rem; font-weight: 600; margin-bottom: var(--spacing-lg); color: var(--gray-900); }
+.social-links { display: flex; gap: var(--spacing-md); }
+.social-link {
+  width: 50px; height: 50px;
+  background: var(--gray-100);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-600);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+}
+.social-link:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-3px);
+}
+
+/* Conteneur du formulaire (colonne droite) */
+.contact-form-container {
+  background: var(--gray-50);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-2xl);
+}
+.contact-form h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xl);
+  color: var(--gray-900);
+}
+
+/* Champ de formulaire avec icône positionnée à gauche */
+.form-group {
+  position: relative;
+  margin-bottom: var(--spacing-lg);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) 3rem;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+  background: var(--white);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+/* Icône positionnée dans le champ */
+.form-group i {
+  position: absolute;
+  left: var(--spacing-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  font-size: 1.1rem;
+}
+/* Zone de texte (textarea) avec hauteur minimum */
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Bouton d'envoi du formulaire (pleine largeur) */
+.submit-btn {
+  width: 100%;
+  background: var(--gradient-primary);
+  color: var(--white);
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+
+/* ============================================================
+   13. PIED DE PAGE (FOOTER)
+   ============================================================ */
+.footer {
+  background: var(--gray-900);
+  color: var(--white);
+  padding: var(--spacing-3xl) 0 var(--spacing-xl);
+}
+
+/* Grille 4 colonnes du footer */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* Logo et texte d'accroche dans la 1ère colonne */
+.footer-logo h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: var(--white);
+}
+.footer-logo p {
+  color: var(--gray-300);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+/* Icônes des réseaux sociaux dans le footer */
+.footer-social { display: flex; gap: var(--spacing-md); }
+
+/* Titres des colonnes du footer */
+.footer-section h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+  color: var(--white);
+}
+
+/* Listes de liens dans le footer */
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: var(--spacing-sm); }
+.footer-section ul li a {
+  color: var(--gray-300);
+  text-decoration: none;
+  transition: color var(--transition-normal);
+}
+.footer-section ul li a:hover { color: var(--white); }
+
+/* Informations de contact dans la dernière colonne */
+.footer-contact p {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--gray-300);
+  margin-bottom: var(--spacing-sm);
+}
+.footer-contact i {
+  width: 20px;
+  color: var(--primary-color);
+}
+
+/* Ligne de copyright en bas */
+.footer-bottom {
+  border-top: 1px solid var(--gray-700);
+  padding-top: var(--spacing-xl);
+  text-align: center;
+  color: var(--gray-400);
+}
+
+
+/* ============================================================
+   14. BOUTON FLOTTANT WHATSAPP
+   Affiché en position fixe en bas à droite.
+   ============================================================ */
+.whatsapp-float {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  right: var(--spacing-xl);
+  background: var(--success-color);
+  color: var(--white);
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow-xl);
+  z-index: 1000;
+  transition: all var(--transition-normal);
+  animation: pulse-whatsapp 2s infinite; /* Pulsation pour attirer l'attention */
+}
+.whatsapp-float:hover {
+  background: #059669;
+  transform: scale(1.1);
+  animation: none; /* Stoppe la pulsation au survol */
+}
+
+/* Bulle de texte "Support" qui apparaît au survol */
+.whatsapp-text {
+  position: absolute;
+  right: 70px;
+  background: var(--gray-900);
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all var(--transition-normal);
+  pointer-events: none; /* Non cliquable */
+}
+.whatsapp-float:hover .whatsapp-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* Petite flèche pointant vers le bouton */
+.whatsapp-text::after {
+  content: '';
+  position: absolute;
+  right: -5px; top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--gray-900);
+}
+
+/* Effet de pulsation du bouton WhatsApp */
+@keyframes pulse-whatsapp {
+  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70%  { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+
+/* ============================================================
+   15. BOUTON RETOUR EN HAUT (BACK TO TOP)
+   Affiché en bas à gauche, visible après un certain scroll.
+   ============================================================ */
+.back-to-top {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  left: var(--spacing-xl);
+  background: var(--primary-color);
+  color: var(--white);
+  width: 50px; height: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all var(--transition-normal);
+  opacity: 0;
+  visibility: hidden;   /* Invisible par défaut */
+  z-index: 1000;
+}
+/* Classe ajoutée par JS quand l'utilisateur scrolle vers le bas */
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.back-to-top:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+}
+
+
+/* ============================================================
+   16. MENU CLIENT CONNECTÉ (DROPDOWN)
+   Affiché dans la navbar quand l'utilisateur est connecté.
+   Remplace le bouton "Se connecter".
+   ============================================================ */
+
+/* Conteneur relatif pour positionner le dropdown */
+.client-menu {
+  position: relative;
+  display: inline-block;
+}
+
+/* Bouton qui affiche le prénom de l'utilisateur */
+.client-name-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all var(--transition-normal);
+}
+.client-name-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Menu déroulant (caché par défaut, visible avec la classe .show) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: var(--white);
+  min-width: 320px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  z-index: 1000;
+  margin-top: 15px;
+  overflow: hidden;
+
+  /* Transition d'apparition (opacité + glissement vers le bas) */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity var(--transition-normal),
+              transform var(--transition-normal),
+              visibility var(--transition-normal);
+}
+
+/* Classe ajoutée par JS au clic sur le bouton client */
+.dropdown-content.show {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Carte d'information sans padding (géré par les enfants) */
+.client-info-card {
+  padding: 0;
+}
+
+/* En-tête violet de la carte (avatar) */
+.client-info-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 25px;
+  text-align: center;
+}
+
+/* Avatar circulaire avec initiale ou icône */
+.client-avatar-large {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 2em;
+  margin: 0 auto;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Zone grise avec nom, email et statistiques */
+.client-details {
+  padding: 20px;
+  text-align: center;
+  background: #f8f9fa;
+}
+.client-details h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Adresse email de l'utilisateur */
+.client-email {
+  color: #7f8c8d;
+  font-size: 0.9em;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Ligne de statistiques (nb de réservations) */
+.client-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Un élément stat (icône + chiffre) */
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.stat-item i {
+  color: #667eea;
+  font-size: 1.3em;
+}
+.stat-item span {
+  font-size: 0.85em;
+  color: #555;
+  font-weight: 600;
+}
+
+/* Zone blanche des actions (liens du menu) */
+.client-actions-menu {
+  background: var(--white);
+}
+
+/* Lien de menu dans le dropdown */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  color: #333;
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  border-left: 3px solid transparent; /* Barre colorée au survol */
+}
+.dropdown-item:hover {
+  background: #f8f9fa;
+  border-left-color: #667eea;
+  padding-left: 25px; /* Légère indentation au survol */
+}
+.dropdown-item i {
+  width: 20px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+/* Variante rouge pour la déconnexion */
+.dropdown-item.logout {
+  color: #e74c3c;
+  border-top: 1px solid #eee;
+}
+.dropdown-item.logout:hover {
+  background: #fee;
+  border-left-color: #e74c3c;
+}
+
+
+/* ============================================================
+   17. ANIMATION COMMUNE (fadeInUp)
+   Utilisée par les cartes services et photos au chargement.
+   La durée est définie dans la règle de la carte,
+   le délai est injecté par JavaScript.
+   ============================================================ */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ============================================================
+   18. RESPONSIVE DESIGN
+   Adaptations pour tablettes (≤1024px) et mobiles (≤768px / ≤480px).
+   ============================================================ */
+
+/* --- Tablettes (largeur ≤ 1024px) --- */
+@media screen and (max-width: 1024px) {
+
+  .container { padding: 0 var(--spacing-md); }
+
+  /* Les cartes services passent en 1 ou 2 colonnes selon l'espace */
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  /* À propos et Contact : une seule colonne */
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2xl);
+  }
+
+  .about-content { padding-right: 0; }
+  .hero-stats { gap: var(--spacing-xl); }
+}
+
+/* --- Mobiles (largeur ≤ 768px) --- */
+@media screen and (max-width: 768px) {
+
+  /* Afficher le hamburger, cacher le menu horizontal */
+  .hamburger { display: flex; }
+
+  .nav-menu {
+    position: fixed;
+    left: -100%;             /* Hors de l'écran par défaut */
+    top: 80px;
+    flex-direction: column;
+    background: var(--white);
+    width: 100%;
+    text-align: center;
+    transition: left var(--transition-normal);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xl) 0;
+    gap: var(--spacing-lg);
+  }
+
+  /* Menu visible quand le hamburger est actif */
+  .nav-menu.active { left: 0; }
+
+  .nav-cta { margin-left: 0; margin-top: var(--spacing-lg); }
+
+  /* Titre hero plus petit sur mobile */
+  .hero-title { font-size: 2.5rem; }
+
+  /* Boutons empilés verticalement */
+  .hero-buttons { flex-direction: column; align-items: center; }
+
+  /* Statistiques empilées */
+  .hero-stats { flex-direction: column; gap: var(--spacing-lg); }
+
+  /* Cartes services en colonne unique */
+  .services-grid { grid-template-columns: 1fr; }
+
+  /* Photos en 2 colonnes minimum */
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  /* Filtres empilés */
+  .service-categories,
+  .gallery-filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Bouton WhatsApp plus petit */
+  .whatsapp-float {
+    width: 50px; height: 50px;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    font-size: 1.3rem;
+  }
+  /* Masquer le texte "Support" sur mobile */
+  .whatsapp-text { display: none; }
+
+  /* Décaler le bouton "Retour en haut" pour éviter le chevauchement */
+  .back-to-top {
+    bottom: 80px;
+    left: var(--spacing-lg);
+  }
+}
+
+/* --- Très petits mobiles (largeur ≤ 480px) --- */
+@media screen and (max-width: 480px) {
+  .container { padding: 0 var(--spacing-sm); }
+  .hero-title    { font-size: 2rem; }
+  .section-title { font-size: 2rem; }
+
+  .service-card,
+  .contact-form-container,
+  .contact-card { padding: var(--spacing-lg); }
+
+  .btn { padding: var(--spacing-md) var(--spacing-lg); font-size: 0.9rem; }
+}
+
+
+/* ============================================================
+   19. CLASSES UTILITAIRES
+   Classes rapides applicables à n'importe quel élément.
+   ============================================================ */
+.hidden  { display: none !important; }
+.visible { display: block !important; }
+
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+
+
+/* ============================================================
+   20. SCROLLBAR PERSONNALISÉE (navigateurs WebKit)
+   ============================================================ */
+::-webkit-scrollbar       { width: 8px; }
+::-webkit-scrollbar-track { background: var(--gray-100); }
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+/* Texte sélectionné mis en bleu */
+::selection {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+/* Contour de focus visible pour l'accessibilité clavier */
+*:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+
+/* ============================================================
+   21. STYLES D'IMPRESSION
+   Masque les éléments inutiles lors de l'impression (Ctrl+P).
+   ============================================================ */
+@media print {
+  .header,
+  .whatsapp-float,
+  .back-to-top { display: none !important; }
+}
